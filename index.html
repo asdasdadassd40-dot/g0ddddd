@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>g0d</title>
+<meta name="description" content="g0d — perfis Discord">
+<link rel="stylesheet" href="css/2b248e9e79008cde.css">
+<link rel="stylesheet" href="css/fd210881ad305466.css">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700&display=swap');
+:root{--theme:#000;--accent:#e10600;--accent-bright:#ff1a12;--white:#fff;--muted:rgba(255,255,255,.72)}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Unbounded,Arial,sans-serif;background:#000;color:#fff}body{overflow-x:hidden}
+.bg{position:fixed;inset:0;z-index:0;background:#050505}.bg video{width:100%;height:100%;object-fit:cover;filter:blur(10px) grayscale(1) contrast(1.25) brightness(.42);transform:scale(1.05);opacity:.9}.bg:after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 42%,rgba(225,6,0,.20),transparent 46%),linear-gradient(rgba(0,0,0,.38),rgba(0,0,0,.78));box-shadow:inset 0 0 180px rgba(225,6,0,.15)}
+.cyberpunk-overlay{position:fixed;inset:0;z-index:2;pointer-events:none;background:linear-gradient(transparent 0,rgba(255,26,18,.045) 50%,transparent 100%);background-size:100% 4px;mix-blend-mode:screen;opacity:.5}
+.reveal{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.5);cursor:pointer;transition:opacity .45s,visibility .45s}.reveal.hide{opacity:0;visibility:hidden;pointer-events:none}.reveal span{font-size:18px;animation:zoom .35s ease}.reveal span:after{content:'_';animation:blink 1s infinite}@keyframes blink{50%{opacity:0}}@keyframes zoom{from{transform:scale(.92);opacity:0}to{transform:scale(1);opacity:1}}
+.page{position:relative;z-index:10;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:65px 24px}.container{width:min(1180px,100%);text-align:center}.brand{font-size:34px;font-weight:700;letter-spacing:-2px;margin:0 0 42px;color:#fff;text-shadow:0 0 22px rgba(255,255,255,.10)}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;align-items:stretch}.grid .card:nth-child(5){grid-column:1 / -1;justify-self:center;width:calc((100% - 54px)/4)}.card{position:relative;min-height:330px;padding:28px 20px;border-radius:20px;background:linear-gradient(180deg,rgba(15,0,0,.72),rgba(0,0,0,.88));border:1px solid rgba(225,6,0,.34);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 18px 50px rgba(0,0,0,.55),inset 0 0 28px rgba(225,6,0,.035);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:transform .3s,background .3s,border-color .3s}.card:hover{transform:translateY(-7px) scale(1.01);background:linear-gradient(180deg,rgba(38,0,0,.78),rgba(0,0,0,.92));border-color:rgba(255,26,18,.78);box-shadow:0 22px 60px rgba(0,0,0,.62),0 0 28px rgba(225,6,0,.16)}
+.avatar-wrap{width:112px;height:112px;border-radius:50%;padding:3px;background:linear-gradient(135deg,#ff1a12,#5a0000);box-shadow:0 0 30px rgba(225,6,0,.30);margin-bottom:20px}.avatar{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block;background:#080000}.name{margin:0;font-size:18px;font-weight:600;word-break:break-all}.handle{margin-top:8px;font-size:11px;color:rgba(255,255,255,.55);word-break:break-all}.actions{margin-top:20px;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap}.discord,.twitter{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:36px;border-radius:10px;background:rgba(225,6,0,.10);color:#fff;text-decoration:none;font-size:10px;border:1px solid rgba(225,6,0,.30);transition:.25s}.discord{padding:9px 13px}.twitter{width:36px;padding:0}.discord:hover,.twitter:hover{background:rgba(225,6,0,.26);border-color:rgba(255,26,18,.72);transform:translateY(-2px) scale(1.05);box-shadow:0 0 18px rgba(225,6,0,.16)}.discord svg,.twitter svg{width:16px;height:16px;fill:var(--accent-bright)}.status{position:absolute;right:18px;top:18px;width:9px;height:9px;border-radius:50%;background:#4a0000;box-shadow:0 0 0 4px rgba(225,6,0,.08)}.status.online{background:#ff1a12;box-shadow:0 0 12px rgba(255,26,18,.75)}.footer{margin-top:38px;color:rgba(255,255,255,.5);font-size:10px}.footer strong{color:#fff;font-weight:500}
+@media(max-width:900px){.grid .card:nth-child(5){grid-column:1 / -1;width:calc((100% - 18px)/2);justify-self:center}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.page{padding:50px 18px}}
+@media(max-width:520px){.grid .card:nth-child(5){grid-column:auto;width:100%}.grid{grid-template-columns:1fr}.card{min-height:300px}.brand{margin-bottom:28px}.page{padding:42px 14px}.container{max-width:360px}}
+</style>
+
+<style id="g0d-profile-toggle">
+/* Perfis ficam ocultos na tela inicial e aparecem somente ao clicar em G0D */
+.g0d-profiles-hidden { display: none !important; }
+.g0d-profile-toggle { cursor: pointer; user-select: none; }
+.g0d-profile-toggle:focus { outline: 2px solid #e31b23; outline-offset: 4px; }
+
+/* Interface: trigger G0D, zoom dos perfis e controle de áudio */
+.profile-open{display:inline-flex;align-items:center;justify-content:center;padding:0;margin:0 0 34px;border:0;background:transparent;color:#fff;font:600 24px Unbounded,Arial,sans-serif;letter-spacing:1px;text-transform:none;cursor:pointer;box-shadow:none;transition:opacity .2s,transform .2s;}
+.profile-open:hover{transform:translateY(-1px);opacity:.8;background:transparent;border:0;box-shadow:none;}
+.card{cursor:pointer;transition:transform .3s,background .3s,border-color .3s,box-shadow .3s;transform-origin:center center;}
+.card.g0d-zoomed{transform:scale(1.08);z-index:25;background:linear-gradient(180deg,rgba(38,0,0,.9),rgba(0,0,0,.96));border-color:rgba(255,26,18,.95);box-shadow:0 28px 80px rgba(0,0,0,.8),0 0 36px rgba(225,6,0,.3);}
+.grid.g0d-has-zoom .card:not(.g0d-zoomed){filter:brightness(.6);transform:scale(.98);}
+.music-toggle{display:none;position:fixed;top:18px;right:18px;z-index:80;width:46px;height:46px;border-radius:12px;border:1px solid rgba(255,255,255,.2);background:rgba(0,0,0,.55);color:#fff;align-items:center;justify-content:center;cursor:pointer;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 10px 30px rgba(0,0,0,.35);transition:.25s;}
+.music-toggle:hover{transform:scale(1.06);border-color:rgba(255,255,255,.45);background:rgba(0,0,0,.75);}
+.music-toggle svg{width:21px;height:21px;fill:currentColor;}
+.music-toggle.is-muted{color:#ff4b43;border-color:rgba(255,75,67,.45);}
+.profile-open.g0d-hidden{display:none;}
+.music-toggle.g0d-show{display:flex;}
+.footer-discord{display:none;align-items:center;justify-content:center;text-decoration:none;color:inherit;font-size:22px;transition:.2s;}.footer-discord:hover{transform:scale(1.08);opacity:.85}.g0d-profile-counter{display:none;position:fixed;top:136px;right:15.5%;align-items:center;gap:7px;padding:6px 10px;color:rgba(255,255,255,.72);font-size:10px;font-weight:500;line-height:1;background:rgba(0,0,0,.28);border:1px solid rgba(255,255,255,.08);border-radius:999px;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);z-index:60;vertical-align:middle;}.g0d-profile-counter svg{width:14px;height:14px;fill:currentColor;flex:none;} .g0d-profile-counter strong{color:#fff;font-weight:500;} .g0d-profile-counter.is-visible{display:inline-flex;}
+@media(max-width:520px){.music-toggle{top:12px;right:12px;width:42px;height:42px;border-radius:11px;}}
+</style>
+
+</head>
+<body>
+<div class="bg"><video autoplay loop muted playsinline preload="auto" src="https://r2.fakecrime.bio/backgrounds/0836c314-9cce-4faf-95dc-2fc8ecffc0c3.mp4"></video></div>
+<div class="cyberpunk-overlay"></div>
+<button id="music-toggle" class="music-toggle" type="button" aria-label="Silenciar música" title="Silenciar música" aria-pressed="false">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 4V5L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.18-3.86v7.72A4.5 4.5 0 0 0 16.5 12zm0-8.5v2.06A7.5 7.5 0 0 1 16.5 18.44v2.06C20.42 19.15 23 15.85 23 12S20.42 4.85 16.5 3.5z"/></svg>
+</button>
+<main class="page">
+<div class="container">
+<button class="profile-open g0d-profile-toggle" id="g0d-open" type="button" aria-label="Abrir perfis" aria-expanded="false">g0d</button>
+<section class="grid g0d-profiles-hidden" id="profiles"></section>
+<div class="footer" id="site-footer"><span id="creator-credit">Criado por indiog0d</span><a id="discord-footer" class="footer-discord" href="https://discord.gg/tYnkE2T9AV" target="_blank" rel="noopener noreferrer" aria-label="Discord" title="Discord"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.54 5.43A16.08 16.08 0 0 0 15.5 4l-.5 1.02a14.5 14.5 0 0 0-5 0L9.5 4a16.1 16.1 0 0 0-4.04 1.43C2.89 9.23 2.2 13 2.45 16.71A16.14 16.14 0 0 0 7.4 19l1.2-1.64a9.95 9.95 0 0 1-1.9-.92l.46-.35c3.67 1.7 6.68 1.7 10.31 0l.47.35c-.61.37-1.25.68-1.91.92L17.23 19a16.13 16.13 0 0 0 4.95-2.29c.3-4.3-.51-8.03-2.64-11.28a16.23 16.23 0 0 0-4.5-1.9ZM8.98 14.28c-1.08 0-1.96-1-1.96-2.24s.86-2.24 1.96-2.24 1.97 1 1.96 2.24c0 1.24-.86 2.24-1.96 2.24Zm6.04 0c-1.08 0-1.96-1-1.96-2.24s.86-2.24 1.96-2.24 1.97 1 1.96 2.24c0 1.24-.86 2.24-1.96 2.24Z"/></svg></a></div>
+</div>
+</main>
+<script>
+const profiles=[
+ {name:'indiog0d',id:'1526831779808284724',twitter:'https://x.com/indiog0d',avatar:'images/profiles/indiog0d.png'},
+ {name:'mkg0d',id:'1253864855635755050',twitter:'https://x.com/mkg0d1',avatar:'images/profiles/mkg0d.png'},
+ {name:'pepeug0d',id:'1294036732219490365',twitter:'https://x.com/pepeug0d',avatar:'images/profiles/pepeug0d.png'},
+ {name:'tutuisg0d',id:'1516966849844346982',twitter:'https://x.com/tutuisg0d',avatar:'images/profiles/tutuisg0d.png'},
+ {name:'dinizg0d',id:'1310785184496357408',twitter:'https://x.com/dnz1ex',avatar:'images/profiles/dinizg0d.png'}
+];
+const fallbackAvatar='images/69be14ba-8750-4753-9890-706e52b1fdde.webp';
+const profileApi=id=>`https://discordlookup.mesalytic.moe/v1/user/${id}`;
+const twitterIcon='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24h-6.657l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.45-6.231Zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77Z"/></svg>';
+const discordIcon='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.317 4.3698a19.79 19.79 0 0 0-4.885-1.515.075.075 0 0 0-.079.037c-.211.375-.445.865-.608 1.25-1.845-.277-3.68-.277-5.487 0-.164-.394-.406-.875-.618-1.25a.077.077 0 0 0-.078-.037A19.736 19.736 0 0 0 3.678 4.37a.069.069 0 0 0-.032.028C.533 9.046-.319 13.58.099 18.058a.082.082 0 0 0 .031.056c2.053 1.508 4.041 2.423 5.993 3.03a.078.078 0 0 0 .084-.028c.462-.63.873-1.295 1.226-1.994a.077.077 0 0 0-.041-.105 12.6 12.6 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .078-.011c3.928 1.794 8.18 1.794 12.061 0a.074.074 0 0 1 .079.01c.12.1.246.199.373.293a.078.078 0 0 1-.007.127c-.598.343-1.22.644-1.873.891a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.077.077 0 0 0 .085.027c1.959-.606 3.947-1.522 5.999-3.029a.077.077 0 0 0 .032-.056c.5-5.177-.838-9.673-3.548-13.66a.062.062 0 0 0-.032-.027ZM8.02 15.331c-1.183 0-2.156-1.085-2.156-2.419 0-1.333.954-2.418 2.156-2.418 1.21 0 2.164 1.094 2.155 2.418 0 1.334-.954 2.419-2.155 2.419Zm7.974 0c-1.183 0-2.155-1.085-2.155-2.419 0-1.333.954-2.418 2.155-2.418 1.21 0 2.164 1.094 2.155 2.418 0 1.334-.945 2.419-2.155 2.419Z"/></svg>';
+function avatarUrl(u){if(!u?.avatar)return fallbackAvatar;const ext=u.avatar.startsWith('a_')?'gif':'png';return `https://cdn.discordapp.com/avatars/${u.id}/${u.avatar}.${ext}?size=256`;}
+function card(p){const discord=p.id?`<a class="discord" target="_blank" rel="noopener noreferrer" href="https://discord.com/users/${p.id}" aria-label="Abrir Discord de ${p.name}">${discordIcon}<span>Discord</span></a>`:'';return `<article class="card" data-id="${p.id||p.name}"><i class="status" title="Perfil do Discord"></i><div class="avatar-wrap"><img class="avatar" src="${p.avatar||fallbackAvatar}" alt="Foto de ${p.name}"></div><h2 class="name">${p.name}</h2><div class="actions">${discord}<a class="twitter" target="_blank" rel="noopener noreferrer" href="${p.twitter}" aria-label="Abrir X de ${p.name}" title="X / Twitter">${twitterIcon}</a></div></article>`}
+const root=document.getElementById('profiles');root.innerHTML=profiles.map(card).join('');
+async function syncProfile(p){
+ const el=document.querySelector(`[data-id="${p.id}"]`);if(!el)return;
+ try{
+   const r=await fetch(profileApi(p.id),{headers:{Accept:'application/json'}});if(!r.ok)throw new Error('lookup unavailable');
+   await r.json();
+   el.querySelector('.status').classList.add('online');
+ }catch(e){
+   el.querySelector('.status').title='Perfil do Discord — sincronização indisponível';
+ }
+}
+profiles.filter(p=>p.id).forEach(syncProfile);
+</script>
+
+<script id="g0d-profile-toggle-script">
+document.addEventListener('DOMContentLoaded', () => {
+  const g0d = document.getElementById('g0d-open');
+  const profiles = document.getElementById('profiles');
+  const muteButton = document.getElementById('music-toggle');
+  const creatorCredit = document.getElementById('creator-credit');
+  const discordFooter = document.getElementById('discord-footer');
+  const footer = document.getElementById('site-footer');
+  let audio = null;
+  let profilesOpened = false;
+  const counterApi = 'https://counterapi.com/api/g0dsite/profile-open?unique=true';
+
+  const eyeIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5c5.5 0 9.8 3.9 11 7-1.2 3.1-5.5 7-11 7S2.2 15.1 1 12C2.2 8.9 6.5 5 12 5Zm0 2C8.8 7 5.8 9 3.4 12 5.8 15 8.8 17 12 17s6.2-2 8.6-5C18.2 9 15.2 7 12 7Zm0 2.2A2.8 2.8 0 1 1 12 14.8 2.8 2.8 0 0 1 12 9.2Z"/></svg>';
+  const counterEl = document.createElement('span');
+  counterEl.className = 'g0d-profile-counter';
+  counterEl.setAttribute('aria-label', 'Visualizações dos perfis');
+  counterEl.innerHTML = `${eyeIcon}<strong id="profile-count">—</strong>`;
+  footer.appendChild(counterEl);
+  const setProfileMode = (open) => {
+    creatorCredit.style.display = open ? 'none' : 'inline';
+    discordFooter.style.display = open ? 'inline-flex' : 'none';
+    counterEl.classList.toggle('is-visible', open);
+  };
+  setProfileMode(false);
+
+  async function updateProfileCounter(){
+    try {
+      const response = await fetch(counterApi, {cache:'no-store'});
+      if (!response.ok) throw new Error('counter unavailable');
+      const data = await response.json();
+      const value = Number(data.value ?? data.data?.value ?? data.count);
+      if (Number.isFinite(value)) document.getElementById('profile-count').textContent = value.toLocaleString('pt-BR');
+    } catch (error) {
+      document.getElementById('profile-count').textContent = '—';
+    }
+  }
+  let muted = false;
+
+  const ensureAudio = () => {
+    if (audio) return audio;
+    audio = document.createElement('audio');
+    audio.id = 'g0d-audio';
+    audio.src = 'musica.mp3';
+    audio.preload = 'auto';
+    audio.loop = true;
+    audio.volume = 1;
+    audio.muted = muted;
+    audio.style.display = 'none';
+    document.body.appendChild(audio);
+    return audio;
+  };
+
+  const startMusic = () => {
+    const player = ensureAudio();
+    const promise = player.play();
+    if (promise && typeof promise.catch === 'function') promise.catch(() => {});
+  };
+
+  const toggleProfiles = () => {
+    const willShow = profiles.classList.contains('g0d-profiles-hidden');
+    profiles.classList.toggle('g0d-profiles-hidden', !willShow);
+    g0d.setAttribute('aria-expanded', String(willShow));
+    g0d.classList.toggle('g0d-hidden', willShow);
+    muteButton.classList.toggle('g0d-show', willShow);
+    setProfileMode(willShow);
+    if (willShow) {
+      startMusic();
+      if (!profilesOpened) {
+        profilesOpened = true;
+        updateProfileCounter();
+      }
+    }
+  };
+
+  g0d.addEventListener('click', toggleProfiles);
+  g0d.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleProfiles(); }
+  });
+
+  muteButton.addEventListener('click', () => {
+    muted = !muted;
+    const player = ensureAudio();
+    player.muted = muted;
+    muteButton.classList.toggle('is-muted', muted);
+    muteButton.setAttribute('aria-pressed', String(muted));
+    muteButton.setAttribute('aria-label', muted ? 'Ativar música' : 'Silenciar música');
+    muteButton.setAttribute('title', muted ? 'Ativar música' : 'Silenciar música');
+    muteButton.innerHTML = muted
+      ? '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.27 3 3 4.27l4.73 4.73H3v6h4l5 4v-5.73L16.73 18 18 16.73 4.27 3zM12 5 9.91 6.75 12 8.84V5zm6.13 3.13-1.42 1.42A4.5 4.5 0 0 1 18.5 12c0 .83-.23 1.61-.63 2.28l1.46 1.46A6.5 6.5 0 0 0 20.5 12a6.48 6.48 0 0 0-2.37-5.87z"/></svg>'
+      : '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 4V5L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.18-3.86v7.72A4.5 4.5 0 0 0 16.5 12zm0-8.5v2.06A7.5 7.5 0 0 1 16.5 18.44v2.06C20.42 19.15 23 15.85 23 12S20.42 4.85 16.5 3.5z"/></svg>';
+  });
+
+  profiles.addEventListener('click', e => {
+    const card = e.target.closest('.card');
+    if (!card || e.target.closest('a,button')) return;
+    const wasZoomed = card.classList.contains('g0d-zoomed');
+    profiles.querySelectorAll('.card.g0d-zoomed').forEach(c => c.classList.remove('g0d-zoomed'));
+    profiles.classList.toggle('g0d-has-zoom', !wasZoomed);
+    if (!wasZoomed) card.classList.add('g0d-zoomed');
+  });
+
+  document.addEventListener('click', e => {
+    if (e.target.closest('#profiles .card') || e.target.closest('#g0d-open')) return;
+    profiles.querySelectorAll('.card.g0d-zoomed').forEach(c => c.classList.remove('g0d-zoomed'));
+    profiles.classList.remove('g0d-has-zoom');
+  });
+});
+</script>
+
+</body>
+</html>
