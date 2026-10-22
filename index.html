@@ -195,7 +195,7 @@ document.getElementById('checkoutForm').addEventListener('submit',event=>{
  ].join('\\n');
  const result=document.getElementById('checkoutResult');
  result.style.display='block';
- if(!/^\\d{10,15}$/.test(WHATSAPP_NUMBER)){
+ if(!/^\d{10,15}$/.test(WHATSAPP_NUMBER)){
    result.textContent='Quase pronto! Configure o WhatsApp da loja na constante WHATSAPP_NUMBER no arquivo index.html (código do país + DDD + número, somente dígitos). Depois publique novamente na Vercel. Nenhum pagamento foi cobrado.';
    return;
  }
