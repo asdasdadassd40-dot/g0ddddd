@@ -27,3 +27,12 @@ IMPORTANTE
 - O nome do favorecido no QR/código informado é VINICIOS BATISTA RAASCH. Confirme que esse é o destinatário correto antes de publicar.
 - Não há cálculo automático de frete, backend de pedidos ou controle de estoque.
 - Se quiser usar link de pagamento PicPay em vez deste Pix, será necessário criar cada cobrança no app (se o recurso estiver disponível) e enviar o link manualmente ao cliente.
+
+
+ATUALIZAÇÃO DE PREÇOS — DESCONTO DE 20%
+- Camiseta Pivora New Era: R$ 71,92
+- Moletom Pivora Premium: R$ 175,92
+- Camiseta Pivora Signature: R$ 111,92
+- Camiseta Pivora Essential: R$ 71,92
+
+Os preços do carrinho são calculados a partir dos valores exibidos nos produtos.
