@@ -100,11 +100,17 @@
           <input id="buyerPhone" name="buyerPhone" type="tel" autocomplete="tel" required placeholder="(00) 00000-0000">
           <label for="buyerCep">CEP de entrega</label>
           <input id="buyerCep" name="buyerCep" inputmode="numeric" autocomplete="postal-code" required placeholder="00000-000">
-          <p class="checkout-section-title" style="margin-top:10px">2. Forma de pagamento</p>
+          <p class="checkout-section-title" style="margin-top:10px">2. Pagamento via Pix</p>
           <div class="payment-options">
-            <label class="payment-option active"><input type="radio" name="paymentMethod" value="Pix" checked><span><strong>Pix</strong><small>Pagamento instantâneo — QR Code/link precisa ser integrado</small></span></label>
-            <label class="payment-option"><input type="radio" name="paymentMethod" value="Cartão de crédito"><span><strong>Cartão de crédito</strong><small>Parcelamento depende do provedor de pagamento</small></span></label>
-            <label class="payment-option"><input type="radio" name="paymentMethod" value="Cartão de débito"><span><strong>Cartão de débito</strong><small>Disponibilidade depende do provedor de pagamento</small></span></label>
+            <label class="payment-option active"><input type="radio" name="paymentMethod" value="Pix" checked><span><strong>Pix</strong><small>Pague usando o QR Code ou o código Pix Copia e Cola abaixo.</small></span></label>
+            <label class="payment-option"><input type="radio" name="paymentMethod" value="Confirmar pagamento pelo WhatsApp"><span><strong>Preciso de ajuda</strong><small>Fale com a loja pelo WhatsApp para confirmar o pedido.</small></span></label>
+          </div>
+          <div style="border:1px solid #dedbd5;padding:14px;text-align:center;margin:12px 0">
+            <img src="pix-qrcode.png" alt="QR Code Pix da Pivora Street" style="width:min(230px,100%);height:auto;display:block;margin:0 auto 10px">
+            <p style="font-size:12px;margin:6px 0"><strong>Favorecido:</strong> VINICIOS BATISTA RAASCH</p>
+            <p style="font-size:11px;color:#666;margin:6px 0 10px">Confira o nome do destinatário no aplicativo do seu banco antes de confirmar.</p>
+            <button type="button" class="checkout-submit" id="copyPixCode" style="width:100%;margin:0">Copiar código Pix</button>
+            <textarea id="pixCode" readonly aria-label="Código Pix Copia e Cola" style="width:100%;height:78px;margin-top:10px;padding:8px;font-size:11px;overflow-wrap:anywhere">00020126410014br.gov.bcb.pix0119ggui71804@gmail.com5204000053039865802BR5923VINICIOS BATISTA RAASCH6009Sao Paulo62290525REC6ADA5A3B4B87339193901363048394</textarea>
           </div>
         </div>
         <div>
@@ -115,7 +121,7 @@
             <div class="summary-total"><span>Total estimado</span><span id="checkoutTotal">R$ 0,00</span></div>
           </div>
           <button class="checkout-submit" type="submit">Continuar pedido ↗</button>
-          <p class="checkout-notice">Ambiente demonstrativo: este formulário não coleta dados de cartão nem cobra pagamentos. Para receber dinheiro de verdade, conecte um provedor de pagamento na plataforma da loja. Frete e estoque também precisam ser configurados.</p>
+          <p class="checkout-notice">Pagamento manual pelo PicPay: ao continuar, seu pedido será enviado pelo WhatsApp para confirmação. Depois, a loja enviará um link PicPay criado para o valor exato do pedido. O pedido só estará pago após a confirmação no aplicativo. O frete ainda será confirmado pela loja.</p>
           <div class="checkout-result" id="checkoutResult" role="status"></div>
         </div>
       </div>
@@ -149,12 +155,53 @@ document.getElementById('checkoutClose').addEventListener('click',closeCheckout)
 document.getElementById('checkoutOverlay').addEventListener('click',event=>{if(event.target.id==='checkoutOverlay')closeCheckout()});
 document.addEventListener('keydown',event=>{if(event.key==='Escape')closeCheckout()});
 document.querySelectorAll('.payment-option input').forEach(input=>input.addEventListener('change',()=>{document.querySelectorAll('.payment-option').forEach(label=>label.classList.toggle('active',label.contains(input)&&input.checked))}));
+// CONFIGURAÇÃO: substitua pelo WhatsApp da loja com código do país e DDD, só números.
+const WHATSAPP_NUMBER = "5527988760183";
+document.getElementById('copyPixCode').addEventListener('click',async()=>{
+ const code=document.getElementById('pixCode').value.trim();
+ try{
+   await navigator.clipboard.writeText(code);
+   notify('Código Pix copiado!');
+ }catch(e){
+   const field=document.getElementById('pixCode');
+   field.focus();field.select();
+   notify('Selecione e copie o código Pix.');
+ }
+});
 document.getElementById('checkoutForm').addEventListener('submit',event=>{
  event.preventDefault();
- const method=new FormData(event.target).get('paymentMethod');
+ if(!cartItems.length){notify('Sua sacola está vazia.');return}
+ const form=new FormData(event.target);
+ const method=form.get('paymentMethod');
+ const counts={};cartItems.forEach(item=>{const key=item.name+'|'+item.price;counts[key]=(counts[key]||0)+1});
+ const subtotal=cartItems.reduce((sum,item)=>sum+item.price,0);
+ const products=Object.entries(counts).map(([key,qty])=>{const [name,price]=key.split('|');return `- ${name} x${qty}: ${money(Number(price)*qty)}`}).join('\\n');
+ const message=[
+   'Olá! Quero confirmar meu pedido na Pivora Street.',
+   '',
+   'Nome: '+form.get('buyerName'),
+   'E-mail: '+form.get('buyerEmail'),
+   'WhatsApp: '+form.get('buyerPhone'),
+   'CEP: '+form.get('buyerCep'),
+   '',
+   'Produtos:',
+   products,
+   '',
+   'Subtotal dos produtos: '+money(subtotal),
+   'Forma de pagamento desejada: '+method,
+   'Frete: a confirmar com a loja.',
+   '',
+   'Por favor, confirme o total final e as instruções de pagamento Pix.'
+ ].join('\\n');
  const result=document.getElementById('checkoutResult');
  result.style.display='block';
- result.textContent='Checkout demonstrativo: seu pedido foi preparado para pagamento por '+method+'. Nenhuma cobrança foi realizada. Para concluir compras reais, conecte um gateway de pagamento e configure frete, estoque e confirmação de pedido.';
+ if(!/^\\d{10,15}$/.test(WHATSAPP_NUMBER)){
+   result.textContent='Quase pronto! Configure o WhatsApp da loja na constante WHATSAPP_NUMBER no arquivo index.html (código do país + DDD + número, somente dígitos). Depois publique novamente na Vercel. Nenhum pagamento foi cobrado.';
+   return;
+ }
+ const url='https://wa.me/'+WHATSAPP_NUMBER+'?text='+encodeURIComponent(message);
+ window.open(url,'_blank','noopener,noreferrer');
+ result.textContent='Seu pedido foi preparado no WhatsApp. Envie a mensagem para a loja; o pagamento ainda não foi realizado. A loja enviará um link PicPay após confirmar o total e o frete.';
 });
 document.getElementById('signup').addEventListener('submit',event=>{event.preventDefault();notify('Valeu! O formulário é demonstrativo e precisa de integração para salvar seu e-mail.');event.target.reset()});
 </script>
