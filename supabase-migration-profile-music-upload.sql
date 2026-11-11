@@ -1,9 +1,8 @@
--- Permite upload de músicas nos perfis A1M (até 15 MB).
+-- A1M: aceita somente MP3 de até 500 MB no bucket de mídia.
+-- O limite global do projeto Supabase também deve ser >= 500 MB.
 update storage.buckets
-set file_size_limit = 15728640,
+set file_size_limit = 524288000,
     allowed_mime_types = array[
-      'image/png','image/jpeg','image/webp',
-      'audio/mpeg','audio/mp3','audio/ogg','audio/wav','audio/x-wav',
-      'audio/mp4','audio/aac','audio/x-m4a'
+      'image/png','image/jpeg','image/webp','audio/mpeg'
     ]
 where id = 'a1m-media';

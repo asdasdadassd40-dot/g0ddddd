@@ -60,4 +60,4 @@ EDIÇÃO DO PERFIL APÓS CRIAR (ATUALIZAÇÃO)
 
 
 ATUALIZAÇÃO — UPLOAD DE MÚSICA NO PERFIL
-Para habilitar o envio de arquivos de música (MP3/OGG/WAV/M4A/AAC, até 15 MB) em projetos já publicados, execute o arquivo supabase-migration-profile-music-upload.sql no SQL Editor do Supabase. Depois publique novamente o projeto na Vercel. O campo de link direto continua disponível como alternativa.
+Para habilitar o envio de músicas somente em MP3 de até 500 MB, execute supabase-migration-profile-music-upload.sql no SQL Editor do Supabase. O envio usa partes resumíveis (TUS). No painel do Supabase, confirme também que o limite global de tamanho de arquivo do projeto/plano é de pelo menos 500 MB. Depois publique novamente na Vercel. A opção de música por link foi removida da interface.
