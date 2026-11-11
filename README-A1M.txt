@@ -50,3 +50,14 @@ AUTORIZAÇÃO DE CONTAS PARA MEMBROS A1M
 
 PERSONALIZAÇÃO DO PERFIL (ATUALIZAÇÃO)
 Para habilitar o fundo personalizado, execute no SQL Editor do Supabase o arquivo supabase-migration-profile-background.sql. Cada usuário pode enviar uma imagem de fundo própria (PNG/JPG/WEBP, até 5 MB). Na página pública, o visitante pode tocar, pausar e continuar a música do perfil.
+
+
+EDIÇÃO DO PERFIL APÓS CRIAR (ATUALIZAÇÃO)
+- O dono do perfil, quando estiver conectado à própria conta, verá o botão 'Editar meu perfil' na página pública.
+- O botão abre o formulário de edição com os dados atuais preenchidos; campos de imagem podem ser substituídos enviando uma nova imagem.
+- Também é possível editar pelo menu Minha conta > Personalizar meu perfil.
+- A edição é validada pela conta autenticada e pelas políticas RLS do Supabase; visitantes não recebem acesso de edição.
+
+
+ATUALIZAÇÃO — UPLOAD DE MÚSICA NO PERFIL
+Para habilitar o envio de arquivos de música (MP3/OGG/WAV/M4A/AAC, até 15 MB) em projetos já publicados, execute o arquivo supabase-migration-profile-music-upload.sql no SQL Editor do Supabase. Depois publique novamente o projeto na Vercel. O campo de link direto continua disponível como alternativa.

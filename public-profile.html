@@ -16,12 +16,12 @@
 .public-content h1{font:800 clamp(24px,5vw,38px) Unbounded,sans-serif;margin:18px 0 10px;overflow-wrap:anywhere}
 .public-bio{max-width:560px;margin:18px auto;color:#c0cde0;line-height:1.8;white-space:pre-wrap;overflow-wrap:anywhere}
 .public-links{margin:24px 0}.music-control{margin-top:22px;display:inline-flex;align-items:center;gap:10px}.music-note{font-size:11px;color:#9aabc2;margin-top:12px}
-.back-link{position:fixed;top:18px;left:18px;z-index:3}
+.back-link{position:fixed;top:18px;left:18px;z-index:3}.owner-edit{position:fixed;top:18px;right:18px;z-index:3}
 @media(max-width:520px){.public-content{padding:0 18px 28px}.public-avatar{width:104px;height:104px;margin-top:-54px}}
 </style>
 </head>
 <body>
-<a class="btn btn-outline back-link" href="javascript:history.back()">← Voltar</a>
+<a class="btn btn-outline back-link" href="javascript:history.back()">← Voltar</a><a class="btn btn-primary owner-edit hidden" id="owner-edit" href="#">Editar meu perfil</a>
 <main class="profile-page" id="profile-page"><article class="public-card">
 <div class="public-banner" id="public-banner"></div><div class="public-content">
 <img class="public-avatar" id="public-avatar" src="images/a1m-logo.png" alt="Foto do perfil">
@@ -36,10 +36,12 @@
  async function start(){
   if(!cfg.url||!cfg.anonKey||!id){$('public-name').textContent='Perfil não encontrado';$('public-bio').textContent='Não foi possível localizar este perfil.';return}
   try{
-   const url=cfg.url.replace(/\/$/,'')+'/rest/v1/member_profiles?select=id,display_name,discord,bio,avatar_url,banner_url,background_url,instagram_url,twitter_url,other_url,music_url,is_member&id=eq.'+encodeURIComponent(id)+'&limit=1';
+   const url=cfg.url.replace(/\/$/,'')+'/rest/v1/member_profiles?select=id,user_id,display_name,discord,bio,avatar_url,banner_url,background_url,instagram_url,twitter_url,other_url,music_url,is_member&id=eq.'+encodeURIComponent(id)+'&limit=1';
+   let session=null;try{session=JSON.parse(localStorage.getItem('a1m_session')||'null')}catch{}
    const res=await fetch(url,{headers:{apikey:cfg.anonKey,Authorization:'Bearer '+cfg.anonKey}});
    if(!res.ok)throw Error('Falha ao carregar perfil');
    const rows=await res.json(),p=rows[0];if(!p)throw Error('Perfil não encontrado');
+   if(session?.user?.id&&session.user.id===p.user_id){const edit=$('owner-edit');edit.href='index.html?editProfile='+encodeURIComponent(p.id);edit.classList.remove('hidden')}
    document.title=p.display_name+' | A1M';$('public-name').textContent=p.display_name||'Perfil A1M';
    $('public-category').textContent=p.is_member?'MEMBRO A1M':'CONVIDADO / EXTERNO';
    $('public-bio').textContent=p.bio||(p.is_member?'Membro da tropa A1M':'Perfil externo');
