@@ -10,3 +10,6 @@ select{width:100%;background:#020711;border:1px solid #24415f;border-radius:8px;
 select:focus{border-color:var(--blue2);box-shadow:0 0 0 3px #087dff22}
 
 .access-admin{margin:22px 0;padding:16px;border:1px solid var(--line);border-radius:12px;background:#087dff0a}.access-admin h3{margin:0 0 8px;color:var(--blue2)}.access-actions{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}
+
+.profile-open{display:inline-block;margin-top:12px;padding:10px 13px;font-size:9px}
+.profile-card:focus-visible{outline:2px solid var(--blue2);outline-offset:3px}
