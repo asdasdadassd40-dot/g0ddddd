@@ -36,7 +36,7 @@
  async function start(){
   if(!cfg.url||!cfg.anonKey||!id){$('public-name').textContent='Perfil não encontrado';$('public-bio').textContent='Não foi possível localizar este perfil.';return}
   try{
-   const url=cfg.url.replace(/\/$/,'')+'/rest/v1/member_profiles?select=id,display_name,discord,bio,avatar_url,banner_url,instagram_url,twitter_url,other_url,music_url,is_member&id=eq.'+encodeURIComponent(id)+'&limit=1';
+   const url=cfg.url.replace(/\/$/,'')+'/rest/v1/member_profiles?select=id,display_name,discord,bio,avatar_url,banner_url,background_url,instagram_url,twitter_url,other_url,music_url,is_member&id=eq.'+encodeURIComponent(id)+'&limit=1';
    const res=await fetch(url,{headers:{apikey:cfg.anonKey,Authorization:'Bearer '+cfg.anonKey}});
    if(!res.ok)throw Error('Falha ao carregar perfil');
    const rows=await res.json(),p=rows[0];if(!p)throw Error('Perfil não encontrado');
@@ -44,14 +44,14 @@
    $('public-category').textContent=p.is_member?'MEMBRO A1M':'CONVIDADO / EXTERNO';
    $('public-bio').textContent=p.bio||(p.is_member?'Membro da tropa A1M':'Perfil externo');
    $('public-avatar').src=p.avatar_url||'images/a1m-logo.png';
-   if(p.banner_url){const bg='url("'+p.banner_url.replace(/["\\]/g,'')+'")';$('public-banner').style.backgroundImage=bg;$('profile-page').style.setProperty('--profile-bg',bg)}
+   if(p.banner_url){const banner='url("'+p.banner_url.replace(/["\\]/g,'')+'")';$('public-banner').style.backgroundImage=banner}if(p.background_url){const bg='url("'+p.background_url.replace(/["\\]/g,'')+'")';$('profile-page').style.setProperty('--profile-bg',bg)}else if(p.banner_url){const bg='url("'+p.banner_url.replace(/["\\]/g,'')+'")';$('profile-page').style.setProperty('--profile-bg',bg)}
    const links=[];if(p.discord)links.push('<a target="_blank" rel="noopener noreferrer" href="https://discord.com/users/'+encodeURIComponent(p.discord)+'">Discord</a>');
    for(const [key,label] of [['instagram_url','Instagram'],['twitter_url','X / Twitter'],['other_url','Link']]){const href=validLink(p[key]);if(href)links.push('<a target="_blank" rel="noopener noreferrer" href="'+esc(href)+'">'+label+'</a>')}
    $('public-links').innerHTML=links.join('');
    if(p.music_url){const audio=$('profile-audio');audio.src=p.music_url;
-    $('music-area').innerHTML='<button class="btn btn-primary music-control" id="music-play">♫ Tocar música do perfil</button><p class="music-note">Música escolhida pelo dono do perfil.</p>';
-    const play=()=>audio.play().then(()=>{$('music-play').textContent='♫ Música tocando'}).catch(()=>{$('music-play').textContent='♫ Tocar música do perfil'});
-    $('music-play').addEventListener('click',play);play();
+    $('music-area').innerHTML='<button class="btn btn-primary music-control" id="music-play" type="button">▶ Tocar música</button><p class="music-note">Música escolhida pelo dono do perfil. Você pode pausar quando quiser.</p>';
+    $('music-play').addEventListener('click',async()=>{if(audio.paused){try{await audio.play();$('music-play').textContent='Ⅱ Pausar música'}catch(e){$('music-play').textContent='▶ Tocar música'}}else{audio.pause();$('music-play').textContent='▶ Continuar música'}});
+    audio.addEventListener('ended',()=>{$('music-play').textContent='▶ Tocar música'});
    }
   }catch(e){$('public-name').textContent='Perfil indisponível';$('public-bio').textContent=e.message}
  }

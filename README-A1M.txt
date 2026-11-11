@@ -46,3 +46,7 @@ AUTORIZAÇÃO DE CONTAS PARA MEMBROS A1M
 - No site, entre com a conta administradora e abra Minha conta. A seção "Autorizações de contas" permite Autorizar ou Recusar cada conta.
 - Somente contas com status "Autorizada" podem criar um perfil próprio na área Membros A1M. A regra também é aplicada no PostgreSQL/RLS.
 - Contas que já existiam quando a migração for executada são adicionadas à lista como pendentes; autorize-as pelo painel.
+
+
+PERSONALIZAÇÃO DO PERFIL (ATUALIZAÇÃO)
+Para habilitar o fundo personalizado, execute no SQL Editor do Supabase o arquivo supabase-migration-profile-background.sql. Cada usuário pode enviar uma imagem de fundo própria (PNG/JPG/WEBP, até 5 MB). Na página pública, o visitante pode tocar, pausar e continuar a música do perfil.
